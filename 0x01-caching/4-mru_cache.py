@@ -3,12 +3,16 @@
 MRUCache class implementation
 """
 from base_caching import BaseCaching
+from collections import deque
 
 
 class MRUCache(BaseCaching):
     """
     Defines a caching system class that implements MRU algorithm
     """
+    # Queue of items accessed in dictionary using get
+    KEYS_ACCESSED = deque([])
+
     def __init__(self):
         """
         Initializes the class
@@ -24,15 +28,28 @@ class MRUCache(BaseCaching):
         if key is None or item is None:
             pass
 
+        if ((len(self.cache_data) == BaseCaching.MAX_ITEMS) and
+           key not in self.cache_data):
+            most_used_key = MRUCache.KEYS_ACCESSED.pop()
+            self.cache_data.pop(most_used_key)
+            print("DISCARD: {}".format(most_used_key))
+
         self.cache_data.update({key: item})
 
-        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-            first_key = list(self.cache_data.keys())[0]
-            self.cache_data.pop(first_key)
-            print("DISCARD: {}".format(first_key))
+        if key in MRUCache.KEYS_ACCESSED:
+            MRUCache.KEYS_ACCESSED.remove(key)
+            MRUCache.KEYS_ACCESSED.append(key)
+        else:
+            MRUCache.KEYS_ACCESSED.append(key)
+
+        # print(f"Put: {MRUCache.KEYS_ACCESSED}")
 
     def get(self, key):
         """
         Returns the value in self.cache_data linked to key
         """
+        if key in MRUCache.KEYS_ACCESSED:
+            MRUCache.KEYS_ACCESSED.remove(key)
+            MRUCache.KEYS_ACCESSED.append(key)
+        # print(f"Get: {MRUCache.KEYS_ACCESSED}")
         return self.cache_data.get(key)
