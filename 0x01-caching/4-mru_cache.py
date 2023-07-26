@@ -42,8 +42,6 @@ class MRUCache(BaseCaching):
         else:
             MRUCache.KEYS_ACCESSED.append(key)
 
-        # print(f"Put: {MRUCache.KEYS_ACCESSED}")
-
     def get(self, key):
         """
         Returns the value in self.cache_data linked to key
@@ -51,5 +49,4 @@ class MRUCache(BaseCaching):
         if key in MRUCache.KEYS_ACCESSED:
             MRUCache.KEYS_ACCESSED.remove(key)
             MRUCache.KEYS_ACCESSED.append(key)
-        # print(f"Get: {MRUCache.KEYS_ACCESSED}")
         return self.cache_data.get(key)
