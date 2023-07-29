@@ -27,7 +27,7 @@ class MRUCache(BaseCaching):
         """
         if key and item:
             if ((len(self.cache_data) == BaseCaching.MAX_ITEMS) and
-            key not in self.cache_data):
+                    key not in self.cache_data):
                 most_used_key = MRUCache.KEYS_ACCESSED.pop()
                 self.cache_data.pop(most_used_key)
                 print("DISCARD: {}".format(most_used_key))
