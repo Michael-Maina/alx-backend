@@ -25,22 +25,20 @@ class MRUCache(BaseCaching):
         checking that BaseCaching.MAX_ITEMS isn't exceeded. Else, discard first
         item following MRU algorithm
         """
-        if key is None or item is None:
-            pass
+        if key and item:
+            if ((len(self.cache_data) == BaseCaching.MAX_ITEMS) and
+            key not in self.cache_data):
+                most_used_key = MRUCache.KEYS_ACCESSED.pop()
+                self.cache_data.pop(most_used_key)
+                print("DISCARD: {}".format(most_used_key))
 
-        if ((len(self.cache_data) == BaseCaching.MAX_ITEMS) and
-           key not in self.cache_data):
-            most_used_key = MRUCache.KEYS_ACCESSED.pop()
-            self.cache_data.pop(most_used_key)
-            print("DISCARD: {}".format(most_used_key))
+            self.cache_data.update({key: item})
 
-        self.cache_data.update({key: item})
-
-        if key in MRUCache.KEYS_ACCESSED:
-            MRUCache.KEYS_ACCESSED.remove(key)
-            MRUCache.KEYS_ACCESSED.append(key)
-        else:
-            MRUCache.KEYS_ACCESSED.append(key)
+            if key in MRUCache.KEYS_ACCESSED:
+                MRUCache.KEYS_ACCESSED.remove(key)
+                MRUCache.KEYS_ACCESSED.append(key)
+            else:
+                MRUCache.KEYS_ACCESSED.append(key)
 
     def get(self, key):
         """

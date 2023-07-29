@@ -21,15 +21,13 @@ class FIFOCache(BaseCaching):
         checking that BaseCaching.MAX_ITEMS isn't exceeded. Else, discard first
         item following FIFO algorithm
         """
-        if key is None or item is None:
-            pass
+        if key and item:
+            self.cache_data.update({key: item})
 
-        self.cache_data.update({key: item})
-
-        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-            first_key = list(self.cache_data.keys())[0]
-            self.cache_data.pop(first_key)
-            print("DISCARD: {}".format(first_key))
+            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                first_key = list(self.cache_data.keys())[0]
+                self.cache_data.pop(first_key)
+                print("DISCARD: {}".format(first_key))
 
     def get(self, key):
         """

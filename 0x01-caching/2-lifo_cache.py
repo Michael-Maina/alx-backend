@@ -21,16 +21,14 @@ class LIFOCache(BaseCaching):
         checking that BaseCaching.MAX_ITEMS isn't exceeded. Else, discard first
         item following LIFO algorithm
         """
-        if key is None or item is None:
-            pass
+        if key and item:
+            self.cache_data.update({key: item})
 
-        self.cache_data.update({key: item})
+            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                self.cache_data.pop(self.last_inserted)
+                print("DISCARD: {}".format(self.last_inserted))
 
-        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-            self.cache_data.pop(self.last_inserted)
-            print("DISCARD: {}".format(self.last_inserted))
-
-        self.last_inserted = key
+            self.last_inserted = key
 
     def get(self, key):
         """

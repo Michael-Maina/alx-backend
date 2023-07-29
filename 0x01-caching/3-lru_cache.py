@@ -25,21 +25,19 @@ class LRUCache(BaseCaching):
         checking that BaseCaching.MAX_ITEMS isn't exceeded. Else, discard first
         item following LRU algorithm
         """
-        if key is None or item is None:
-            pass
+        if key and item:
+            self.cache_data.update({key: item})
 
-        self.cache_data.update({key: item})
+            if key in LRUCache.KEYS_ACCESSED:
+                LRUCache.KEYS_ACCESSED.remove(key)
+                LRUCache.KEYS_ACCESSED.append(key)
+            else:
+                LRUCache.KEYS_ACCESSED.append(key)
 
-        if key in LRUCache.KEYS_ACCESSED:
-            LRUCache.KEYS_ACCESSED.remove(key)
-            LRUCache.KEYS_ACCESSED.append(key)
-        else:
-            LRUCache.KEYS_ACCESSED.append(key)
-
-        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-            least_used_key = LRUCache.KEYS_ACCESSED.popleft()
-            self.cache_data.pop(least_used_key)
-            print("DISCARD: {}".format(least_used_key))
+            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                least_used_key = LRUCache.KEYS_ACCESSED.popleft()
+                self.cache_data.pop(least_used_key)
+                print("DISCARD: {}".format(least_used_key))
 
     def get(self, key):
         """
