@@ -46,22 +46,6 @@ class Server:
         """
         Returns a dictionary with data on deletion resilient pagination
         """
-        # data_len = len(self.dataset())
-        # max_index = data_len - 1
-        # next_index = min(index + page_size, max_index + 1)
-
-        # assert index < max_index
-
-        # dataset = [self.indexed_dataset().get(i, None)
-        #            for i in range(index, next_index)]
-        # result = {}
-        # result["index"] = index
-        # result["data"] = dataset
-        # result["page_size"] = page_size
-        # result["next_index"] = next_index
-
-        # return result
-
         if index is None:
             index = 0
 
@@ -85,5 +69,5 @@ class Server:
             "page_size": page_size,
             "next_index": next_index
             }
-        
+
         return result
